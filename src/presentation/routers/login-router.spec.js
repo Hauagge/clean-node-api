@@ -3,27 +3,28 @@ import LoginRouter from './login-router.js';
 
 
 const makeSut = () => {
-  class AuthUseCase{
-    auth(){
-
+  class AuthUseCaseSpy {
+    auth(email, password) {
+      this.email = email
+      this.password = password
     }
   }
-  const authUseCase = new AuthUseCase()
-  const sut = new LoginRouter(authUseCase)
+  const authUseCaseSpy = new AuthUseCaseSpy()
+  const sut = new LoginRouter(authUseCaseSpy)
   return {
-    sut, authUseCase
+    sut, authUseCaseSpy
   }
 
 }
 
-describe('Login Router',()=>{
-  it('should return 400 if no email is provided',async()=>{
+describe('Login Router', () => {
+  it('should return 400 if no email is provided', async () => {
 
-    const {sut} = makeSut();
+    const { sut } = makeSut();
     const httpRequest = {
-        body:{
-            password: 'any_password'
-        }
+      body: {
+        password: 'any_password'
+      }
     }
     const httpResponse = sut.route(httpRequest);
     expect(httpResponse.statusCode).toEqual(400);
@@ -32,13 +33,13 @@ describe('Login Router',()=>{
 
   })
 
-  it('should return 400 if no password is provided',async()=>{
+  it('should return 400 if no password is provided', async () => {
 
-    const {sut} = makeSut();
+    const { sut } = makeSut();
     const httpRequest = {
-        body:{
-            email: 'any_email@email.com'
-        }
+      body: {
+        email: 'any_email@email.com'
+      }
     }
     const httpResponse = sut.route(httpRequest);
     expect(httpResponse.statusCode).toEqual(400);
@@ -47,38 +48,40 @@ describe('Login Router',()=>{
 
   })
 
-  
-  it('should return 500 if no httpRequest is provided',async()=>{
 
-    const {sut} = makeSut();
-   
+  it('should return 500 if no httpRequest is provided', async () => {
+
+    const { sut } = makeSut();
+
     const httpResponse = sut.route();
     expect(httpResponse.statusCode).toEqual(500);
 
   })
 
-    
-  it('should return 500 if  httpRequest  has no body',async()=>{
 
-    const {sut} = makeSut();
-    const httpRequest = { }
+  it('should return 500 if  httpRequest  has no body', async () => {
+
+    const { sut } = makeSut();
+    const httpRequest = {}
     const httpResponse = sut.route(httpRequest);
     expect(httpResponse.statusCode).toEqual(500);
 
   })
 
-  it('should call use case with correct params',async()=>{
+  it('should call use case with correct params', async () => {
 
-    const {suc, authUseCase} = makeSut();
+    const { sut, authUseCaseSpy } = makeSut();
     const httpRequest = {
-      body:{
+      body: {
         email: 'any_email@email.com',
-        password:'any_password'
+        password: 'any_password'
       }
-     }
+    }
     sut.route(httpRequest);
-    expect(authUseCase.email).toBe(httpRequest.body.email);
+    expect(authUseCaseSpy.email).toBe(httpRequest.body.email);
+    expect(authUseCaseSpy.password).toBe(httpRequest.body.password);
+
 
   })
-  
+
 })
