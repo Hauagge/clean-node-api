@@ -96,6 +96,34 @@ describe('Login Router', () => {
     expect(httpResponse.statusCode).toBe(401);
     expect(httpResponse.body).toEqual(new UnauthorizedError('UnauthorizedError'));
 
+  });
+  it('should return 500 if  not AuthUseCase  is provided', async () => {
+    const sut = new LoginRouter();
+    const httpRequest = {
+      body: {
+        email: 'any_email@email.com',
+        password: 'any_password'
+      }
+
+    }
+
+    const hrrpResposne = sut.route(httpRequest);
+    expect(hrrpResposne.statusCode).toBe(500);
+
+  })
+
+
+  it('should return 500 if   AuthUseCase has no method', async () => {
+    const sut = new LoginRouter({});
+    const httpRequest = {
+      body: {
+        email: 'any_email@email.com',
+        password: 'any_password'
+      }
+
+    }
+    const hrrpResposne = sut.route(httpRequest);
+    expect(hrrpResposne.statusCode).toBe(500);
   })
 
 })
