@@ -1,14 +1,16 @@
 {
-	"name": "cleanArchitecture",
+	"name": "clean-architecture",
 	"version": "1.0.0",
 	"main": "index.js",
 	"license": "MIT",
 	"scripts": {
-		"test": "jest --watchAll",
+		"test": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js --watch",
 		"test:staged": "jest"
 	},
+	"type": "module",
 	"dependencies": {
 		"bcrypt": "^5.0.1",
+		"cross-env": "^7.0.3",
 		"express": "^4.17.3",
 		"jsonwebtoken": "^8.5.1",
 		"validator": "^13.7.0"
@@ -17,6 +19,7 @@
 		"env": [ "jest" ]
 	},
 	"devDependencies": {
+		"@babel/plugin-transform-modules-commonjs": "^7.17.9",
 		"husky": "^7.0.4",
 		"jest": "^27.5.1",
 		"lint-staged": "^12.3.7",
