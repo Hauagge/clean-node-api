@@ -21,5 +21,18 @@ describe('Login Router',()=>{
     expect(httpResponse.statusCode).toEqual(400);
 
   })
+
+  it('should return 400 if no password is provided',async()=>{
+
+    const sut = new LoginRouter();
+    const httpRequest = {
+        body:{
+            email: 'any_email@email.com'
+        }
+    }
+    const httpResponse = sut.route(httpRequest);
+    expect(httpResponse.statusCode).toEqual(400);
+
+  })
   
 })
