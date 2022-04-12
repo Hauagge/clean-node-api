@@ -1,4 +1,4 @@
-import { badRequest, serverError, unauthorizedError } from '../helpers/http-reponse';
+import { badRequest, serverError, unauthorizedError, ok } from '../helpers/http-reponse';
 
 export default class LoginRouter {
    constructor(authUseCase) {
@@ -16,7 +16,12 @@ export default class LoginRouter {
       if (!password) {
          return badRequest('password');
       }
-      this.authUseCase.auth(email, password)
-      return unauthorizedError()
+      const acessToken = this.authUseCase.auth(email, password)
+      if (!acessToken) {
+         return unauthorizedError()
+
+      }
+
+      return ok()
    }
 }

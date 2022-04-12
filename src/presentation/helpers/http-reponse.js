@@ -22,3 +22,8 @@ export const unauthorizedError = () => {
     };
 }
 
+export const ok = () => {
+    return {
+        statusCode: 200,
+    };
+}
