@@ -22,8 +22,9 @@ export const unauthorizedError = () => {
     };
 }
 
-export const ok = () => {
+export const ok = (data) => {
     return {
         statusCode: 200,
+        body:data
     };
 }

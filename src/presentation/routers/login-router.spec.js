@@ -1,21 +1,21 @@
 import MissingParamError from '../helpers/missing-param-error.js';
 import UnauthorizedError from '../helpers/unauthorizedError-param-error';
-
 import LoginRouter from './login-router.js';
+
 
 
 const makeSut = () => {
   class AuthUseCaseSpy {
-    auth(email, password) {
-      this.email = email
-      this.password = password
-      return this.acessToken
+     auth(email, password) {
+      this.email = email;
+      this.password = password;
+      return this.accessToken;
 
     }
   }
-  const authUseCaseSpy = new AuthUseCaseSpy()
-  const sut = new LoginRouter(authUseCaseSpy)
-  authUseCaseSpy.acessToken = 'valid_token'
+  const authUseCaseSpy = new AuthUseCaseSpy();
+  authUseCaseSpy.accessToken = 'valid_token'
+  const sut = new LoginRouter(authUseCaseSpy);
   return {
     sut, authUseCaseSpy
   }
@@ -30,7 +30,7 @@ describe('Login Router', () => {
       body: {
         password: 'any_password'
       }
-    }
+    };
     const httpResponse = sut.route(httpRequest);
     expect(httpResponse.statusCode).toEqual(400);
     expect(httpResponse.body).toEqual(new MissingParamError('email'));
@@ -45,7 +45,7 @@ describe('Login Router', () => {
       body: {
         email: 'any_email@email.com'
       }
-    }
+    };
     const httpResponse = sut.route(httpRequest);
     expect(httpResponse.statusCode).toEqual(400);
     expect(httpResponse.body).toEqual(new MissingParamError('password'));
@@ -63,11 +63,10 @@ describe('Login Router', () => {
 
   });
 
-
   it('should return 500 if  httpRequest  has no body', async () => {
 
     const { sut } = makeSut();
-    const httpRequest = {}
+    const httpRequest = {};
     const httpResponse = sut.route(httpRequest);
     expect(httpResponse.statusCode).toEqual(500);
 
@@ -81,7 +80,7 @@ describe('Login Router', () => {
         email: 'any_email@email.com',
         password: 'any_password'
       }
-    }
+    };
     sut.route(httpRequest);
     expect(authUseCaseSpy.email).toBe(httpRequest.body.email);
     expect(authUseCaseSpy.password).toBe(httpRequest.body.password);
@@ -90,13 +89,13 @@ describe('Login Router', () => {
   it('should return 401  when invalid credentials are provided', async () => {
 
     const { sut, authUseCaseSpy } = makeSut();
-    authUseCaseSpy.acessToken = null
+    authUseCaseSpy.accessToken = null
     const httpRequest = {
       body: {
         email: 'invalid_email@email.com',
         password: 'invalid_password'
       }
-    }
+    };
     const httpResponse = sut.route(httpRequest);
     expect(httpResponse.statusCode).toBe(401);
     expect(httpResponse.body).toEqual(new UnauthorizedError('UnauthorizedError'));
@@ -110,8 +109,7 @@ describe('Login Router', () => {
         email: 'any_email@email.com',
         password: 'any_password'
       }
-
-    }
+    };
 
     const hrrpResposne = sut.route(httpRequest);
     expect(hrrpResposne.statusCode).toBe(500);
@@ -126,7 +124,7 @@ describe('Login Router', () => {
         password: 'any_password'
       }
 
-    }
+    };
     const hrrpResposne = sut.route(httpRequest);
     expect(hrrpResposne.statusCode).toBe(500);
   });
@@ -139,9 +137,10 @@ describe('Login Router', () => {
         email: 'valid_email@email.com',
         password: 'valid_password'
       }
-    }
+    };
     const httpResponse = sut.route(httpRequest);
     expect(httpResponse.statusCode).toBe(200);
+    expect(httpResponse.body.accessToken).toEqual(authUseCaseSpy.accessToken);
 
   });
 
