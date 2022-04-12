@@ -79,16 +79,7 @@ describe('Login Router', () => {
 
   });
 
-  it('should return 500 if  httpRequest  has no body', async () => {
-
-    const { sut } = makeSut();
-    const httpRequest = {};
-    const httpResponse = await sut.route(httpRequest);
-    expect(httpResponse.statusCode).toEqual(500);
-    expect(httpResponse.body).toEqual(new ServerError());
-
-
-  });
+ 
 
   it('should call use case with correct params', async () => {
 
@@ -133,6 +124,17 @@ describe('Login Router', () => {
     const httpResponse = await sut.route(httpRequest);
     expect(httpResponse.statusCode).toBe(200);
     expect(httpResponse.body.accessToken).toEqual(authUseCaseSpy.accessToken);
+
+  });
+
+  it('should return 500 if  httpRequest  has no body', async () => {
+
+    const { sut } = makeSut();
+    const httpRequest = {};
+    const httpResponse = await sut.route(httpRequest);
+    expect(httpResponse.statusCode).toEqual(500);
+    expect(httpResponse.body).toEqual(new ServerError());
+
 
   });
 

@@ -1,10 +1,9 @@
-import MissingParamError from './missing-param-error.js';
 import ServerError from './server-error';
 import UnauthorizedError from './unauthorizedError-param-error.js';
-export const badRequest = (paramName) => {
+export const badRequest = (error) => {
     return {
         statusCode: 400,
-        body: new MissingParamError(paramName)
+        body: error
 
     };
 }
