@@ -1,6 +1,6 @@
 import MissingParamError from './missing-param-error.js';
+import ServerError from './server-error';
 import UnauthorizedError from './unauthorizedError-param-error.js';
-
 export const badRequest = (paramName) => {
     return {
         statusCode: 400,
@@ -12,6 +12,8 @@ export const badRequest = (paramName) => {
 export const serverError = () => {
     return {
         statusCode: 500,
+        body: new ServerError()
+
     };
 }
 

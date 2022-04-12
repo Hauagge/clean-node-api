@@ -5,24 +5,22 @@ export default class LoginRouter {
       this.authUseCase = authUseCase;
    }
    route(httpRequest) {
-      if (!httpRequest || !httpRequest.body || !this.authUseCase || !this.authUseCase.auth) {
-         return serverError();
-
-      }
-      const { email, password } = httpRequest.body;
-      if (!email) {
+      try{ 
+         const { email, password } = httpRequest.body;
+         if (!email) {
          return badRequest('email');
-      }
-      if (!password) {
-         return badRequest('password');
-      }
-      const accessToken = this.authUseCase.auth(email, password)
-
-      if (!accessToken) {
-         return unauthorizedError()
-
-      }
-
-      return ok({accessToken})
+            }
+         if (!password) {
+            return badRequest('password');
+         }
+         const accessToken = this.authUseCase.auth(email, password)
+         if (!accessToken) {
+            return unauthorizedError()
+         }
+         return ok({accessToken})
+      }catch(error){
+            return serverError();
+         }
+     
    }
 }
