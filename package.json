@@ -5,7 +5,8 @@
 	"license": "MIT",
 	"scripts": {
 		"test": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js  --silent --watch",
-		"test:staged": "jest --passWithNoTests --silent"
+		"test:staged": "jest --passWithNoTests --silent",
+		"test:ci": "jest --passWithNoTests --silent --coverage"
 	},
 	"type": "module",
 	"dependencies": {
